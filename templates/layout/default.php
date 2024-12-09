@@ -61,6 +61,77 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             background: #f8f9fa;
             margin-top: auto;
         }
+        /* Styles pour les formulaires */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input {
+            margin-bottom: 1rem;
+        }
+
+        .input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .input input[type="text"],
+        .input input[type="email"],
+        .input input[type="password"],
+        .input input[type="date"],
+        .input input[type="time"],
+        .input select,
+        .input textarea {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .input textarea {
+            min-height: 100px;
+        }
+
+        .checkbox label {
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        /* Style pour les boutons */
+        .button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #3498db;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #2980b9;
+        }
+
+        /* Ajustements pour le menu */
+        #menu {
+            padding: 1rem;
+        }
+
+        #menu a {
+            display: block;
+            padding: 0.5rem;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        #menu a:hover {
+            background: #ecf0f1;
+        }
     </style>
 </head>
 <body>

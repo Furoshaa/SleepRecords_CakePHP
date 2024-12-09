@@ -1,4 +1,4 @@
-<div class="users form">
+<div class="users form form-container">
     <?= $this->Flash->render() ?>
     <h3>Connexion</h3>
     <?= $this->Form->create() ?>

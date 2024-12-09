@@ -3,8 +3,10 @@ $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js', ['block' => true]);
 ?>
 
 <div class="sleep-records index content">
-    <h3>Suivi du Sommeil</h3>
-    <?= $this->Html->link('Ajouter un enregistrement', ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <div class="page-header">
+        <h3>Suivi du Sommeil</h3>
+        <?= $this->Html->link('+ Nouvel enregistrement', ['action' => 'add'], ['class' => 'button add-button']) ?>
+    </div>
 
     <div class="weekly-stats">
         <h4>Statistiques de la semaine</h4>
@@ -143,5 +145,28 @@ document.addEventListener('DOMContentLoaded', function() {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2ecc71;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    transition: transform 0.2s, background-color 0.2s;
+    text-decoration: none;
+    height: 40px;
+}
+.add-button:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+    color: white;
 }
 </style> 

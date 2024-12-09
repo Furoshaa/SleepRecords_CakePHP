@@ -126,6 +126,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $service->setConfig([
             'unauthenticatedRedirect' => Router::url('/login'),
             'queryParam' => 'redirect',
+            'skipAuthenticationRedirectUrls' => ['/']
         ]);
 
         $fields = [

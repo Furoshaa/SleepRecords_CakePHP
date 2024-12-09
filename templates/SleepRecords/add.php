@@ -1,4 +1,4 @@
-<div class="sleep-records form content">
+<div class="sleep-records form form-container">
     <h3>Ajouter un enregistrement de sommeil</h3>
     <?= $this->Form->create($sleepRecord) ?>
     <fieldset>

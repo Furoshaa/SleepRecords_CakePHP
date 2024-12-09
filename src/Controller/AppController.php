@@ -43,5 +43,8 @@ class AppController extends Controller
 
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication');
+
+        // Autoriser l'accès à la page d'accueil sans authentification
+        $this->Authentication->addUnauthenticatedActions(['display']);
     }
 }
