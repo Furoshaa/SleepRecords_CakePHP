@@ -58,7 +58,7 @@ $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js', ['block' => true]);
         <canvas id="sleepChart"></canvas>
     </div>
 
-    <table>
+    <table class="sleep-records-table">
         <thead>
             <tr>
                 <th>Date</th>
@@ -68,6 +68,7 @@ $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js', ['block' => true]);
                 <th>Forme</th>
                 <th>Sieste</th>
                 <th>Sport</th>
+                <th>Commentaire</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -75,21 +76,40 @@ $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js', ['block' => true]);
             <?php foreach ($sleepRecords as $record): ?>
             <tr>
                 <td><?= $record->date->format('d/m/Y') ?></td>
-                <td><?= $record->bedtime->format('H:i') ?></td>
-                <td><?= $record->waketime->format('H:i') ?></td>
-                <td>
+                <td class="time-cell"><?= $record->bedtime->format('H:i') ?></td>
+                <td class="time-cell"><?= $record->waketime->format('H:i') ?></td>
+                <td class="cycles-cell">
                     <?= number_format($record->sleep_cycles, 1) ?>
                     <span class="indicator <?= $record->is_full_cycle ? 'success' : '' ?>" title="Cycle complet (±10 min)">●</span>
                     <span class="indicator <?= $record->has_enough_cycles ? 'success' : '' ?>" title="5 cycles ou plus">●</span>
                 </td>
-                <td><?= $record->energy_level ?>/10</td>
-                <td>
-                    <?= $record->afternoon_nap ? 'Après-midi' : '' ?>
-                    <?= $record->evening_nap ? 'Soir' : '' ?>
+                <td class="energy-cell">
+                    <div class="energy-bar" style="--energy-level: <?= ($record->energy_level / 10) * 100 ?>%">
+                        <span><?= $record->energy_level ?>/10</span>
+                    </div>
                 </td>
-                <td><?= $record->sport ? 'Oui' : 'Non' ?></td>
-                <td>
-                    <?= $this->Html->link('Modifier', ['action' => 'edit', $record->id]) ?>
+                <td class="nap-cell">
+                    <?php if ($record->afternoon_nap): ?>
+                        <span class="nap-badge afternoon">Après-midi</span>
+                    <?php endif; ?>
+                    <?php if ($record->evening_nap): ?>
+                        <span class="nap-badge evening">Soir</span>
+                    <?php endif; ?>
+                </td>
+                <td class="sport-cell">
+                    <?php if ($record->sport): ?>
+                        <span class="sport-badge">✓</span>
+                    <?php endif; ?>
+                </td>
+                <td class="comment-cell">
+                    <?php if (!empty($record->comments)): ?>
+                        <div class="comment-preview" title="<?= h($record->comments) ?>">
+                            <?= $this->Text->truncate(h($record->comments), 30, ['ellipsis' => '...']) ?>
+                        </div>
+                    <?php endif; ?>
+                </td>
+                <td class="actions-cell">
+                    <?= $this->Html->link('Modifier', ['action' => 'edit', $record->id], ['class' => 'edit-button']) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -252,5 +272,150 @@ document.addEventListener('DOMContentLoaded', function() {
     font-size: 1.4rem;
     font-weight: bold;
     color: #2c3e50;
+}
+
+.sleep-records-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 2rem 0;
+}
+
+.sleep-records-table th {
+    background: #f8f9fa;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.sleep-records-table td {
+    padding: 1.2rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+.sleep-records-table tr:last-child td {
+    border-bottom: none;
+}
+
+.sleep-records-table tr:hover {
+    background: #f8f9fa;
+}
+
+.time-cell {
+    font-family: monospace;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.cycles-cell {
+    white-space: nowrap;
+}
+
+.energy-cell {
+    min-width: 100px;
+}
+
+.energy-bar {
+    background: #e9ecef;
+    border-radius: 20px;
+    height: 28px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.energy-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: var(--energy-level);
+    background: linear-gradient(to right, #ff9f43, #ee5253);
+    border-radius: 20px;
+    z-index: 1;
+    opacity: 0.3;
+}
+
+.energy-bar span {
+    position: relative;
+    z-index: 2;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.nap-cell {
+    white-space: nowrap;
+}
+
+.nap-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0 2px;
+    text-align: center;
+}
+
+.nap-badge.afternoon {
+    background: #ffd43b;
+    color: #2c3e50;
+}
+
+.nap-badge.evening {
+    background: #74b9ff;
+    color: #2c3e50;
+}
+
+.sport-badge {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: #55efc4;
+    color: #00b894;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-weight: bold;
+}
+
+.comment-cell {
+    max-width: 200px;
+}
+
+.comment-preview {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: help;
+    color: #666;
+}
+
+.edit-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: #3498db;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.edit-button:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
 }
 </style> 
