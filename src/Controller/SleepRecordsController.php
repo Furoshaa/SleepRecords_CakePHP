@@ -34,13 +34,15 @@ class SleepRecordsController extends AppController
         $chartData = [
             'labels' => [],
             'cycles' => [],
-            'energy' => []
+            'energy' => [],
+            'hours' => []
         ];
 
         foreach ($allRecords as $record) {
             $chartData['labels'][] = $record->date->format('d/m/Y');
             $chartData['cycles'][] = $record->sleep_cycles;
             $chartData['energy'][] = $record->energy_level;
+            $chartData['hours'][] = $record->sleep_hours;
         }
 
         $this->set('sleepRecords', $allRecords);

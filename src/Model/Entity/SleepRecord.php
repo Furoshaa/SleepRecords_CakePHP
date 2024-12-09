@@ -52,4 +52,17 @@ class SleepRecord extends Entity
     {
         return $this->sleep_cycles >= 5;
     }
+
+    protected function _getSleepHours()
+    {
+        $bedtime = $this->bedtime->toNative();
+        $waketime = $this->waketime->toNative();
+        
+        if ($waketime < $bedtime) {
+            $waketime = $waketime->modify('+1 day');
+        }
+        
+        $interval = $waketime->diff($bedtime);
+        return $interval->h + ($interval->i / 60);
+    }
 } 

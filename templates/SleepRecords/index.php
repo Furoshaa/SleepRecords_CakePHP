@@ -75,14 +75,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 borderColor: 'rgb(75, 192, 192)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 tension: 0.1,
-                fill: true
+                fill: true,
+                yAxisID: 'y'
             }, {
                 label: 'Niveau d\'énergie',
                 data: <?= json_encode($chartData['energy']) ?>,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 tension: 0.1,
-                fill: true
+                fill: true,
+                yAxisID: 'y'
+            }, {
+                label: 'Heures de sommeil',
+                data: <?= json_encode($chartData['hours']) ?>,
+                borderColor: 'rgb(153, 102, 255)',
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                tension: 0.1,
+                fill: true,
+                yAxisID: 'y'
             }]
         },
         options: {
@@ -91,7 +101,12 @@ document.addEventListener('DOMContentLoaded', function() {
             scales: {
                 y: {
                     beginAtZero: true,
-                    suggestedMax: 10
+                    suggestedMax: 12,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Heures / Cycles / Niveau'
+                    }
                 }
             },
             plugins: {
