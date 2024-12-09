@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\I18n\Time;
 
 class SleepRecordsTable extends Table
 {
@@ -79,9 +80,17 @@ class SleepRecordsTable extends Table
         $totalCycles = 0;
         $consecutiveDays = 0;
         $maxConsecutiveDays = 0;
+        $totalEnergy = 0;
+        $sportDays = 0;
+        $recordCount = 0;
 
         foreach ($records as $record) {
             $totalCycles += $record->sleep_cycles;
+            $totalEnergy += $record->energy_level;
+            if ($record->sport) {
+                $sportDays++;
+            }
+            $recordCount++;
             
             if ($record->has_enough_cycles) {
                 $consecutiveDays++;
@@ -94,7 +103,63 @@ class SleepRecordsTable extends Table
         return [
             'totalCycles' => $totalCycles,
             'hasEnoughTotalCycles' => $totalCycles >= 42,
-            'hasFourConsecutiveDays' => $maxConsecutiveDays >= 4
+            'hasFourConsecutiveDays' => $maxConsecutiveDays >= 4,
+            'avgEnergy' => $recordCount > 0 ? $totalEnergy / $recordCount : 0,
+            'sportDays' => $sportDays
+        ];
+    }
+
+    public function getGlobalStats($userId)
+    {
+        $records = $this->find()
+            ->where(['user_id' => $userId])
+            ->all();
+
+        $totalDays = $records->count();
+        if ($totalDays === 0) {
+            return [
+                'avgCycles' => 0,
+                'maxSleepHours' => 0,
+                'minSleepHours' => 0,
+                'bestStreak' => 0,
+                'totalDays' => 0,
+                'sportPercentage' => 0
+            ];
+        }
+
+        $sportDays = 0;
+        $totalCycles = 0;
+        $maxSleepHours = 0;
+        $minSleepHours = 24;
+        $bestStreak = 0;
+        $currentStreak = 0;
+
+        foreach ($records as $record) {
+            if ($record->sport) {
+                $sportDays++;
+            }
+
+            $totalCycles += $record->sleep_cycles;
+            $sleepHours = $record->sleep_hours;
+            
+            $maxSleepHours = max($maxSleepHours, $sleepHours);
+            $minSleepHours = min($minSleepHours, $sleepHours);
+
+            if ($record->has_enough_cycles) {
+                $currentStreak++;
+                $bestStreak = max($bestStreak, $currentStreak);
+            } else {
+                $currentStreak = 0;
+            }
+        }
+
+        return [
+            'avgCycles' => $totalCycles / $totalDays,
+            'maxSleepHours' => $maxSleepHours,
+            'minSleepHours' => $minSleepHours,
+            'bestStreak' => $bestStreak,
+            'totalDays' => $totalDays,
+            'sportPercentage' => ($sportDays / $totalDays) * 100
         ];
     }
 } 

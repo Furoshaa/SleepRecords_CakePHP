@@ -45,8 +45,11 @@ class SleepRecordsController extends AppController
             $chartData['hours'][] = $record->sleep_hours;
         }
 
+        // Calcul des statistiques globales
+        $globalStats = $this->SleepRecords->getGlobalStats($user->id);
+        
         $this->set('sleepRecords', $allRecords);
-        $this->set(compact('weekStats', 'chartData'));
+        $this->set(compact('weekStats', 'chartData', 'globalStats'));
     }
 
     public function add()
