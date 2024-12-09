@@ -43,8 +43,8 @@ $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js', ['block' => true]);
                 <td><?= $record->waketime->format('H:i') ?></td>
                 <td>
                     <?= number_format($record->sleep_cycles, 1) ?>
-                    <span class="indicator <?= $record->is_full_cycle ? 'success' : '' ?>">●</span>
-                    <span class="indicator <?= $record->has_enough_cycles ? 'success' : '' ?>">●</span>
+                    <span class="indicator <?= $record->is_full_cycle ? 'success' : '' ?>" title="Cycle complet (±10 min)">●</span>
+                    <span class="indicator <?= $record->has_enough_cycles ? 'success' : '' ?>" title="5 cycles ou plus">●</span>
                 </td>
                 <td><?= $record->energy_level ?>/10</td>
                 <td>
@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
 .indicator {
     font-size: 20px;
     color: #ccc;
+    cursor: help;
 }
 .indicator.success {
     color: #00c851;

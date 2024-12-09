@@ -44,13 +44,14 @@ class SleepRecord extends Entity
         $roundedCycles = round($cycles);
         $difference = abs($cycles - $roundedCycles);
         
-        // Tolérance de 10 minutes = 0.11 cycles
-        return $difference <= 0.11;
+        // Un cycle = 1.5 heures = 90 minutes
+        // 10 minutes = 10/90 = 0.11 cycles
+        return $difference <= 0.11;  // Si la différence est de 10 minutes ou moins
     }
 
     protected function _getHasEnoughCycles()
     {
-        return $this->sleep_cycles >= 5;
+        return $this->sleep_cycles >= 5;  // 5 cycles = 7.5 heures
     }
 
     protected function _getSleepHours()
