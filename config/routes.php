@@ -80,6 +80,9 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
         $builder->connect('/admin', ['controller' => 'Users', 'action' => 'admin']);
         $builder->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
+        $builder->connect('/sleep-records', ['controller' => 'SleepRecords', 'action' => 'index']);
+        $builder->connect('/sleep-records/add', ['controller' => 'SleepRecords', 'action' => 'add']);
+        $builder->connect('/sleep-records/edit/*', ['controller' => 'SleepRecords', 'action' => 'edit']);
 
         $builder->fallbacks();
     });
