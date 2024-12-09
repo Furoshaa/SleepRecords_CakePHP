@@ -12,7 +12,14 @@ class SleepRecordsController extends AppController
         $user = $this->Authentication->getIdentity();
         $startDate = new Date('monday this week');
         
-        $sleepRecords = $this->SleepRecords->find()
+        // Récupérer tous les enregistrements de l'utilisateur
+        $allRecords = $this->SleepRecords->find()
+            ->where(['user_id' => $user->id])
+            ->order(['date' => 'ASC'])
+            ->all();
+
+        // Récupérer les enregistrements de la semaine pour les statistiques
+        $weekRecords = $this->SleepRecords->find()
             ->where([
                 'user_id' => $user->id,
                 'date >=' => $startDate,
@@ -23,20 +30,21 @@ class SleepRecordsController extends AppController
 
         $weekStats = $this->SleepRecords->getWeekStats($user->id, $startDate);
         
-        // Préparer les données pour le graphique
+        // Préparer les données pour le graphique en utilisant tous les enregistrements
         $chartData = [
             'labels' => [],
             'cycles' => [],
             'energy' => []
         ];
 
-        foreach ($sleepRecords as $record) {
-            $chartData['labels'][] = $record->date->format('d/m');
+        foreach ($allRecords as $record) {
+            $chartData['labels'][] = $record->date->format('d/m/Y');
             $chartData['cycles'][] = $record->sleep_cycles;
             $chartData['energy'][] = $record->energy_level;
         }
 
-        $this->set(compact('sleepRecords', 'weekStats', 'chartData'));
+        $this->set('sleepRecords', $allRecords);
+        $this->set(compact('weekStats', 'chartData'));
     }
 
     public function add()

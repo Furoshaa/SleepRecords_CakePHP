@@ -18,7 +18,7 @@ $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js', ['block' => true]);
         </p>
     </div>
 
-    <div class="chart-container" style="position: relative; height:300px; margin-bottom: 20px;">
+    <div class="chart-container" style="position: relative; height:400px; width:100%; margin: 20px 0;">
         <canvas id="sleepChart"></canvas>
     </div>
 
@@ -63,32 +63,44 @@ $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js', ['block' => true]);
 
 <?php $this->append('script'); ?>
 <script>
-const ctx = document.getElementById('sleepChart').getContext('2d');
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: <?= json_encode($chartData['labels']) ?>,
-        datasets: [{
-            label: 'Cycles de sommeil',
-            data: <?= json_encode($chartData['cycles']) ?>,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }, {
-            label: 'Niveau d\'énergie',
-            data: <?= json_encode($chartData['energy']) ?>,
-            borderColor: 'rgb(255, 99, 132)',
-            tension: 0.1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('sleepChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <?= json_encode($chartData['labels']) ?>,
+            datasets: [{
+                label: 'Cycles de sommeil',
+                data: <?= json_encode($chartData['cycles']) ?>,
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.1,
+                fill: true
+            }, {
+                label: 'Niveau d\'énergie',
+                data: <?= json_encode($chartData['energy']) ?>,
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    suggestedMax: 10
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
             }
         }
-    }
+    });
 });
 </script>
 <?php $this->end(); ?>
@@ -109,5 +121,11 @@ new Chart(ctx, {
     padding: 15px;
     border-radius: 5px;
     margin: 20px 0;
+}
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 </style> 
