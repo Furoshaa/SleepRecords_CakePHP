@@ -55,6 +55,12 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             flex: 1;
             padding: 1rem;
         }
+        .footer-content {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
@@ -81,16 +87,33 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <div class="main-container">
         <div id="menu">
             <?php
-            // Récupération et affichage du menu
+            
+            $identity = $this->getRequest()->getAttribute('identity');
             $menuItems = TableRegistry::getTableLocator()
                 ->get('Menus')
-                ->find()
-                ->order(['ordre' => 'ASC']);
+                ->find();
+
+            if ($identity) {
+                // Menu pour utilisateurs connectés
+                $menuItems = $menuItems->where([
+                    'OR' => [
+                        'lien NOT IN' => ['/login', '/register'],
+                        'lien IS NULL'
+                    ]
+                ]);
+            } else {
+                // Menu pour visiteurs
+                $menuItems = $menuItems->where([
+                    'lien IN' => ['/login', '/register']
+                ]);
+            }
+
+            $menuItems = $menuItems->order(['ordre' => 'ASC']);
             
             foreach ($menuItems as $item) {
                 echo $this->Html->link(
                     h($item->intitule),
-                    $item->lien,
+                    !empty($item->lien) ? $item->lien : '#',
                     ['class' => 'menu-item']
                 ) . '<br>';
             }
@@ -102,6 +125,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </main>
     </div>
     <footer>
+        <div class="footer-content">
+            <p>&copy; <?= date('Y') ?> Mon Site. Tous droits réservés.</p>
+        </div>
     </footer>
 </body>
 </html>

@@ -17,15 +17,10 @@ class UsersController extends AppController
     {
         $result = $this->Authentication->getResult();
         if ($result->isValid()) {
-            $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'Users',
-                'action' => 'admin',
-            ]);
-
-            return $this->redirect($redirect);
+            return $this->redirect(['controller' => 'SleepRecords', 'action' => 'index']);
         }
         if ($this->request->is('post') && !$result->isValid()) {
-            $this->Flash->error('Invalid username or password');
+            $this->Flash->error('Identifiants invalides');
         }
     }
 
@@ -80,5 +75,14 @@ class UsersController extends AppController
             }
             $this->Flash->error('Adresse email non trouvée.');
         }
+    }
+
+    public function index()
+    {
+        $users = $this->Users->find()
+            ->select(['id', 'username', 'email', 'firstname', 'lastname', 'created'])
+            ->order(['created' => 'DESC']);
+        
+        $this->set(compact('users'));
     }
 } 
