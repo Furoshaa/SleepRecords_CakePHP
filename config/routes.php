@@ -79,6 +79,7 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/register', ['controller' => 'Users', 'action' => 'register']);
         $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
         $builder->connect('/admin', ['controller' => 'Users', 'action' => 'admin']);
+        $builder->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
 
         $builder->fallbacks();
     });

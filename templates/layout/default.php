@@ -14,6 +14,8 @@
  * @var \App\View\AppView $this
  */
 
+use Cake\ORM\TableRegistry;
+
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
@@ -21,34 +23,84 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
-
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake']) ?>
-
+    <title><?= $this->fetch('title') ?></title>
+    <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake']) ?>
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+    <style>
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .user-info {
+            text-align: right;
+        }
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 100px);
+        }
+        #menu {
+            width: 250px;
+            padding: 1rem;
+            background: #f8f9fa;
+        }
+        .content {
+            flex: 1;
+            padding: 1rem;
+        }
+    </style>
 </head>
 <body>
-    <nav class="top-nav">
-        <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <?= $this->Html->link('Mon Site', '/') ?>
+            </div>
+            <div class="user-info">
+                <?php
+                $identity = $this->getRequest()->getAttribute('identity');
+                if ($identity) {
+                    echo h($identity->firstname) . ' ' . h($identity->lastname);
+                    echo ' | ';
+                    echo $this->Html->link('Déconnexion', ['controller' => 'Users', 'action' => 'logout']);
+                } else {
+                    echo $this->Html->link('Connexion', ['controller' => 'Users', 'action' => 'login']);
+                }
+                ?>
+            </div>
         </div>
-        <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
+    </header>
+
+    <div class="main-container">
+        <div id="menu">
+            <?php
+            // Récupération et affichage du menu
+            $menuItems = TableRegistry::getTableLocator()
+                ->get('Menus')
+                ->find()
+                ->order(['ordre' => 'ASC']);
+            
+            foreach ($menuItems as $item) {
+                echo $this->Html->link(
+                    h($item->intitule),
+                    $item->lien,
+                    ['class' => 'menu-item']
+                ) . '<br>';
+            }
+            ?>
         </div>
-    </nav>
-    <main class="main">
-        <div class="container">
+        <main class="content">
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
-        </div>
-    </main>
+        </main>
+    </div>
     <footer>
     </footer>
 </body>

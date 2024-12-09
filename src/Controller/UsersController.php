@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Mailer\Mailer;
+
 class UsersController extends AppController
 {
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->Authentication->addUnauthenticatedActions(['login', 'register']);
+        $this->Authentication->addUnauthenticatedActions(['login', 'register', 'forgot_password']);
     }
 
     public function login()
@@ -51,5 +53,32 @@ class UsersController extends AppController
     {
         $user = $this->Authentication->getIdentity();
         $this->set(compact('user'));
+    }
+
+    public function forgotPassword()
+    {
+        if ($this->request->is('post')) {
+            $email = $this->request->getData('email');
+            $user = $this->Users->findByEmail($email)->first();
+            
+            if ($user) {
+                // Generate new password
+                $newPassword = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 10);
+                $user->password = $newPassword;
+                
+                if ($this->Users->save($user)) {
+                    // Send email
+                    $mailer = new Mailer('default');
+                    $mailer
+                        ->setTo($email)
+                        ->setSubject('Réinitialisation de mot de passe')
+                        ->deliver('Votre nouveau mot de passe est: ' . $newPassword);
+                    
+                    $this->Flash->success('Un nouveau mot de passe vous a été envoyé par email.');
+                    return $this->redirect(['action' => 'login']);
+                }
+            }
+            $this->Flash->error('Adresse email non trouvée.');
+        }
     }
 } 
