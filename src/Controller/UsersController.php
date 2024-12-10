@@ -36,10 +36,10 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success('Registration successful. Please login.');
+                $this->Flash->success(__('Registration successful.'));
                 return $this->redirect(['action' => 'login']);
             }
-            $this->Flash->error('Registration failed. Please try again.');
+            $this->Flash->error(__('Registration failed. Please try again.'));
         }
         $this->set(compact('user'));
     }
