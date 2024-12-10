@@ -21,20 +21,26 @@ This web application helps users track and manage their sleep patterns. Users ca
 ### Installation Steps
 
 1. Clone the repository
+```bash
 git clone [your-repository-url]
 cd [project-directory]
+```
 
 2. Install dependencies
+```bash
 composer install
+```
 
 3. Configure your database
 - Copy `config/.env.example` to `config/.env`
   (If .env.example doesn't exist, create a new file named `.env` in the config directory)
 - Update the database configuration in `config/.env`:
+```bash
 export DATABASE_HOST="localhost"
 export DATABASE_USER="your_username"
 export DATABASE_PASS="your_password"
 export DATABASE_NAME="sleep_tracker"
+```
 
 4. Set up the database
 - Create a new MySQL database named 'sleep_tracker'
@@ -44,7 +50,9 @@ export DATABASE_NAME="sleep_tracker"
   - sleep_records (id, user_id, sleep_time, wake_time, quality, notes, created))
 
 5. Start the development server
+```bash 
 bin/cake server
+```
 
 The application should now be running at http://localhost:8765
 
@@ -114,8 +122,10 @@ The application uses two main tables:
 
 ### Permission Issues
 For Linux:
+```bash
 chmod -R 777 tmp/
 chmod -R 777 logs/
+```
 
 For Windows:
 - Right-click on the tmp/ and logs/ folders
@@ -125,11 +135,15 @@ For Windows:
 
 ### Installation Problems
 - Clear cache after configuration changes:
+```bash
 bin/cake cache clear_all
+```
 
 - If composer shows errors, try:
+```bash
 composer update --no-scripts
 composer dump-autoload
+```
 
 ### Common Runtime Errors
 1. "Database connection failed"
@@ -161,7 +175,9 @@ composer dump-autoload
 
 ### Testing
 Run tests using:
+```bash
 vendor/bin/phpunit
+```
 
 ## Contributing
 1. Fork the repository
