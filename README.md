@@ -28,19 +28,20 @@ cd [project-directory]
 composer install
 
 3. Configure your database
-- Copy config/app_local.example.php to config/app_local.php
-- Update the database configuration in config/app_local.php:
-'Datasources' => [
-    'default' => [
-        'host' => 'localhost',
-        'username' => 'your_username',
-        'password' => 'your_password',
-        'database' => 'sleep_tracker',
-    ],
-],
+- Copy `config/.env.example` to `config/.env`
+  (If .env.example doesn't exist, create a new file named `.env` in the config directory)
+- Update the database configuration in `config/.env`:
+export DATABASE_HOST="localhost"
+export DATABASE_USER="your_username"
+export DATABASE_PASS="your_password"
+export DATABASE_NAME="sleep_tracker"
 
-4. Create the database and run migrations
-bin/cake migrations migrate
+4. Set up the database
+- Create a new MySQL database named 'sleep_tracker'
+- Import the database structure from `config/schema/sleep_tracker.sql`
+  (This file contains the initial database structure with the following tables:
+  - users (id, email, password, firstname, lastname, created)
+  - sleep_records (id, user_id, sleep_time, wake_time, quality, notes, created))
 
 5. Start the development server
 bin/cake server
@@ -75,6 +76,8 @@ The application uses two main tables:
    - id: Primary key
    - email: User's email address
    - password: Hashed password
+   - firstname: User's first name
+   - lastname: User's last name
    - created: Account creation timestamp
 
 2. sleep_records
@@ -84,6 +87,7 @@ The application uses two main tables:
    - wake_time: When the user woke up
    - quality: Sleep quality rating
    - notes: Additional comments
+   - created: Record creation timestamp
 
 ## Usage Guide
 
@@ -103,14 +107,21 @@ The application uses two main tables:
 ## Common Issues & Troubleshooting
 
 ### Database Connection Issues
-- Verify database credentials in config/app_local.php
+- Verify database credentials in your `.env` file
+- Make sure your `.env` file is properly loaded (check if debug messages show DATABASE_* variables are set)
 - Ensure MySQL service is running
 - Check if the database exists and is accessible
 
 ### Permission Issues
-- Ensure tmp/ and logs/ directories are writable:
+For Linux:
 chmod -R 777 tmp/
 chmod -R 777 logs/
+
+For Windows:
+- Right-click on the tmp/ and logs/ folders
+- Properties -> Security -> Edit
+- Give full control to the user running the web server
+- Apply and OK
 
 ### Installation Problems
 - Clear cache after configuration changes:
@@ -122,7 +133,7 @@ composer dump-autoload
 
 ### Common Runtime Errors
 1. "Database connection failed"
-   - Check database credentials
+   - Check credentials in .env file
    - Verify MySQL is running
    - Ensure database exists
 
