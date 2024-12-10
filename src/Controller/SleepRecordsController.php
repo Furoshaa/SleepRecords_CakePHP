@@ -12,25 +12,20 @@ class SleepRecordsController extends AppController
         $user = $this->Authentication->getIdentity();
         $startDate = new Date('monday this week');
         
-        // Récupérer tous les enregistrements de l'utilisateur
-        $allRecords = $this->SleepRecords->find()
+        // Pour la liste (DESC)
+        $sleepRecords = $this->SleepRecords->find()
+            ->contain(['Users'])
+            ->where(['user_id' => $user->id])
+            ->order(['date' => 'DESC'])
+            ->all();
+
+        // Pour le graphique (ASC)
+        $chartRecords = $this->SleepRecords->find()
             ->where(['user_id' => $user->id])
             ->order(['date' => 'ASC'])
             ->all();
 
-        // Récupérer les enregistrements de la semaine pour les statistiques
-        $weekRecords = $this->SleepRecords->find()
-            ->where([
-                'user_id' => $user->id,
-                'date >=' => $startDate,
-                'date <=' => $startDate->modify('+6 days')
-            ])
-            ->order(['date' => 'ASC'])
-            ->all();
-
-        $weekStats = $this->SleepRecords->getWeekStats($user->id, $startDate);
-        
-        // Préparer les données pour le graphique en utilisant tous les enregistrements
+        // Préparer les données pour le graphique
         $chartData = [
             'labels' => [],
             'cycles' => [],
@@ -38,17 +33,17 @@ class SleepRecordsController extends AppController
             'hours' => []
         ];
 
-        foreach ($allRecords as $record) {
+        foreach ($chartRecords as $record) {
             $chartData['labels'][] = $record->date->format('d/m/Y');
             $chartData['cycles'][] = $record->sleep_cycles;
             $chartData['energy'][] = $record->energy_level;
             $chartData['hours'][] = $record->sleep_hours;
         }
 
-        // Calcul des statistiques globales
+        $weekStats = $this->SleepRecords->getWeekStats($user->id, $startDate);
         $globalStats = $this->SleepRecords->getGlobalStats($user->id);
         
-        $this->set('sleepRecords', $allRecords);
+        $this->set('sleepRecords', $sleepRecords);
         $this->set(compact('weekStats', 'chartData', 'globalStats'));
     }
 
