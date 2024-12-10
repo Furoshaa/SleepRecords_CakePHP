@@ -42,9 +42,27 @@ class SleepRecordsController extends AppController
 
         $weekStats = $this->SleepRecords->getWeekStats($user->id, $startDate);
         $globalStats = $this->SleepRecords->getGlobalStats($user->id);
-        
+
+        // Add these calculations after your existing statistics
+        $averageSleepTime = $this->SleepRecords->find()
+            ->where(['user_id' => $this->Authentication->getIdentity()->id])
+            ->select(['avg_sleep' => 'AVG(TIME_TO_SEC(TIMEDIFF(waketime, bedtime)) / 3600)'])
+            ->first();
+
+        $averageEnergy = $this->SleepRecords->find()
+            ->where(['user_id' => $this->Authentication->getIdentity()->id])
+            ->select(['avg_energy' => 'AVG(energy_level)'])
+            ->first();
+
+        $goodSleepPercentage = $this->SleepRecords->find()
+            ->where(['user_id' => $this->Authentication->getIdentity()->id])
+            ->select([
+                'good_sleep_percentage' => 'ROUND((SUM(CASE WHEN TIME_TO_SEC(TIMEDIFF(waketime, bedtime)) / 5400 >= 5 THEN 1 ELSE 0 END) / COUNT(*)) * 100, 1)'
+            ])
+            ->first();
+
         $this->set('sleepRecords', $sleepRecords);
-        $this->set(compact('weekStats', 'chartData', 'globalStats'));
+        $this->set(compact('weekStats', 'chartData', 'globalStats', 'averageSleepTime', 'averageEnergy', 'goodSleepPercentage'));
     }
 
     public function add()

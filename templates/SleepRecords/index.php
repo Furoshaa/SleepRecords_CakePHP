@@ -31,6 +31,18 @@ $this->Html->script('https://cdn.jsdelivr.net/npm/chart.js', ['block' => true]);
                     <span class="stat-value"><?= number_format($globalStats['avgCycles'], 1) ?></span>
                 </div>
                 <div class="stat-item">
+                    <span class="stat-label">Moyenne durée sommeil</span>
+                    <span class="stat-value"><?= number_format($averageSleepTime->avg_sleep, 1) ?>h</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Moyenne niveau d'énergie</span>
+                    <span class="stat-value"><?= number_format($averageEnergy->avg_energy, 1) ?>/10</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Nuits avec 5+ cycles</span>
+                    <span class="stat-value"><?= number_format($goodSleepPercentage->good_sleep_percentage, 1) ?>%</span>
+                </div>
+                <div class="stat-item">
                     <span class="stat-label">Record sommeil le plus long</span>
                     <span class="stat-value"><?= number_format($globalStats['maxSleepHours'], 1) ?>h</span>
                 </div>
@@ -417,5 +429,33 @@ document.addEventListener('DOMContentLoaded', function() {
 .edit-button:hover {
     background: #2980b9;
     transform: translateY(-1px);
+}
+
+.statistics-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.statistic-box {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.statistic-box h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.statistic-box p {
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #007bff;
 }
 </style> 
