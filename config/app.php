@@ -96,39 +96,16 @@ return [
      */
     'Cache' => [
         'default' => [
-            'className' => FileEngine::class,
-            'path' => CACHE,
-            'url' => env('CACHE_DEFAULT_URL', null),
+            'className' => 'Null',
+            'prefix' => 'myapp_',
         ],
-
-        /*
-         * Configure the cache used for general framework caching.
-         * Translation cache files are stored with this configuration.
-         * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
-         * If you set 'className' => 'Null' core cache will be disabled.
-         */
-        '_cake_translations_' => [
-            'className' => FileEngine::class,
-            'prefix' => 'myapp_cake_translations_',
-            'path' => CACHE . 'persistent' . DS,
-            'serialize' => true,
-            'duration' => '+1 years',
-            'url' => env('CACHE_CAKECORE_URL', null),
+        '_cake_core_' => [
+            'className' => 'Null',
+            'prefix' => 'myapp_cake_core_',
         ],
-
-        /*
-         * Configure the cache for model and datasource caches. This cache
-         * configuration is used to store schema descriptions, and table listings
-         * in connections.
-         * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
-         */
         '_cake_model_' => [
-            'className' => FileEngine::class,
+            'className' => 'Null',
             'prefix' => 'myapp_cake_model_',
-            'path' => CACHE . 'models' . DS,
-            'serialize' => true,
-            'duration' => '+1 years',
-            'url' => env('CACHE_CAKEMODEL_URL', null),
         ],
     ],
 
@@ -340,28 +317,12 @@ return [
      */
     'Log' => [
         'debug' => [
-            'className' => FileLog::class,
-            'path' => LOGS,
-            'file' => 'debug',
-            'url' => env('LOG_DEBUG_URL', null),
-            'scopes' => null,
-            'levels' => ['notice', 'info', 'debug'],
+            'className' => 'Cake\Log\Engine\ConsoleLog',
+            'levels' => [],
         ],
         'error' => [
-            'className' => FileLog::class,
-            'path' => LOGS,
-            'file' => 'error',
-            'url' => env('LOG_ERROR_URL', null),
-            'scopes' => null,
-            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
-        ],
-        // To enable this dedicated query log, you need to set your datasource's log flag to true
-        'queries' => [
-            'className' => FileLog::class,
-            'path' => LOGS,
-            'file' => 'queries',
-            'url' => env('LOG_QUERIES_URL', null),
-            'scopes' => ['cake.database.queries'],
+            'className' => 'Cake\Log\Engine\ConsoleLog',
+            'levels' => [],
         ],
     ],
 

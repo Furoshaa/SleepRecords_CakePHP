@@ -15,7 +15,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN),
+    'debug' => true,
 
     /*
      * Security and encryption configuration
@@ -103,6 +103,29 @@ return [
         'default' => [
             'transport' => 'default',
             'from' => ['your-mailgun-sender@yourdomain.com' => 'Your Site Name'],
+        ],
+    ],
+
+    /*
+     * Cache configuration
+     *
+     * - className - The cache engine to use.
+     * - path - The path to the cache directory.
+     * - url - The URL to the cache directory.
+     * - duration - The duration to cache items.
+     * - prefix - The prefix to use for cache keys.
+     * - serialize - Whether to serialize cache data.
+     * - mask - The file permissions to use for cache files.
+     */
+    'Cache' => [
+        'default' => [
+            'className' => 'Null',
+        ],
+        '_cake_core_' => [
+            'className' => 'Null',
+        ],
+        '_cake_model_' => [
+            'className' => 'Null',
         ],
     ],
 ];
