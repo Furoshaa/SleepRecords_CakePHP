@@ -138,7 +138,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <header>
         <div class="header-content">
             <div class="logo">
-                <?= $this->Html->link('Mon Site', '/') ?>
+                <?= $this->Html->link('SleepTracker', '/') ?>
             </div>
             <div class="user-info">
                 <?php
