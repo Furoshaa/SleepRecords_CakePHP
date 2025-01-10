@@ -4,9 +4,10 @@
 
 # Cake specific #
 ################
-tmp/
-logs/
-
+tmp/*
+!tmp/
+logs/*
+!logs/
 # OS generated files #
 ######################
 .DS_Store
