@@ -1,0 +1,48 @@
+2025/01/10 12:44:59 [error] 149075#149075: *55 connect() failed (111: Connection refused) while connecting to upstream, client: 172.71.131.17, server: cake.furosha.com, request: "HEAD / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "cake.furosha.com"
+2025/01/10 12:47:53 [error] 149132#149132: *9 connect() failed (111: Connection refused) while connecting to upstream, client: 172.71.126.162, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "cake.furosha.com"
+2025/01/10 12:48:41 [error] 149133#149133: *11 connect() failed (111: Connection refused) while connecting to upstream, client: 172.68.174.172, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "cake.furosha.com"
+2025/01/10 12:48:52 [error] 149134#149134: *13 connect() failed (111: Connection refused) while connecting to upstream, client: 172.70.135.51, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "cake.furosha.com"
+2025/01/10 12:49:02 [error] 149131#149131: *15 connect() failed (111: Connection refused) while connecting to upstream, client: 172.69.22.214, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "cake.furosha.com"
+2025/01/10 13:42:29 [error] 150530#150530: *15 upstream timed out (110: Connection timed out) while reading response header from upstream, client: 141.101.95.12, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.2-fpm.sock", host: "cake.furosha.com"
+2025/01/10 14:22:41 [error] 597#597: *93 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught Error: Interface "Authentication\AuthenticationServiceProviderInterface" not found in /var/www/cake/src/Application.php:45
+Stack trace:
+#0 /var/www/cake/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/cake/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/cake/webroot/index.php(34): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/cake/src/Application.php on line 45" while reading response header from upstream, client: 172.71.122.209, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.2-fpm.sock:", host: "cake.furosha.com"
+2025/01/10 14:22:44 [error] 597#597: *95 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught Error: Interface "Authentication\AuthenticationServiceProviderInterface" not found in /var/www/cake/src/Application.php:45
+Stack trace:
+#0 /var/www/cake/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/cake/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/cake/webroot/index.php(34): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/cake/src/Application.php on line 45" while reading response header from upstream, client: 172.71.122.208, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.2-fpm.sock:", host: "cake.furosha.com"
+2025/01/10 14:25:00 [error] 597#597: *97 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught Error: Interface "Authentication\AuthenticationServiceProviderInterface" not found in /var/www/cake/src/Application.php:45
+Stack trace:
+#0 /var/www/cake/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/cake/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/cake/webroot/index.php(34): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/cake/src/Application.php on line 45" while reading response header from upstream, client: 172.69.223.119, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.2-fpm.sock:", host: "cake.furosha.com"
+2025/01/10 14:25:26 [error] 599#599: *99 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught Error: Interface "Authentication\AuthenticationServiceProviderInterface" not found in /var/www/cake/src/Application.php:45
+Stack trace:
+#0 /var/www/cake/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/cake/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/cake/webroot/index.php(34): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/cake/src/Application.php on line 45" while reading response header from upstream, client: 172.69.223.120, server: cake.furosha.com, request: "GET /users HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.2-fpm.sock:", host: "cake.furosha.com"
+2025/01/10 14:25:46 [error] 599#599: *101 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught Error: Interface "Authentication\AuthenticationServiceProviderInterface" not found in /var/www/cake/src/Application.php:45
+Stack trace:
+#0 /var/www/cake/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/cake/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/cake/webroot/index.php(34): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/cake/src/Application.php on line 45" while reading response header from upstream, client: 172.69.223.119, server: cake.furosha.com, request: "GET /Users HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.2-fpm.sock:", host: "cake.furosha.com"
+2025/01/10 14:33:09 [error] 599#599: *111 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught Error: Interface "Authentication\AuthenticationServiceProviderInterface" not found in /var/www/cake/src/Application.php:45
+Stack trace:
+#0 /var/www/cake/vendor/composer/ClassLoader.php(576): include()
+#1 /var/www/cake/vendor/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 /var/www/cake/webroot/index.php(34): Composer\Autoload\ClassLoader->loadClass()
+#3 {main}
+  thrown in /var/www/cake/src/Application.php on line 45" while reading response header from upstream, client: 172.70.34.101, server: cake.furosha.com, request: "GET / HTTP/1.1", upstream: "fastcgi://unix:/var/run/php/php8.2-fpm.sock:", host: "cake.furosha.com"
