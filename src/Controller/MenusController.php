@@ -12,6 +12,9 @@ class MenusController extends AppController
         // Get current user
         $currentUser = $this->Authentication->getIdentity();
         
+        // Debug line to check user permissions
+        debug($currentUser);
+        
         // Check permissions for all menu-related actions
         if (!$currentUser || $currentUser->permission < 2) {
             $this->Flash->error('Access denied. Administrator permission required.');
@@ -66,5 +69,40 @@ class MenusController extends AppController
             $this->Flash->error('Le menu n\'a pas pu être supprimé.');
         }
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function reorder()
+    {
+        $this->request->allowMethod(['POST', 'AJAX']);
+        $positions = $this->request->getData('positions');
+        
+        if ($positions) {
+            try {
+                foreach ($positions as $ordre => $id) {
+                    $menu = $this->Menus->get($id);
+                    $menu->ordre = $ordre + 1;
+                    $this->Menus->save($menu);
+                }
+                
+                // Return JSON response
+                return $this->response->withType('application/json')
+                    ->withStringBody(json_encode([
+                        'status' => 'success',
+                        'message' => 'Ordre mis à jour avec succès'
+                    ]));
+            } catch (\Exception $e) {
+                return $this->response->withType('application/json')
+                    ->withStringBody(json_encode([
+                        'status' => 'error',
+                        'message' => 'Erreur lors de la mise à jour'
+                    ]));
+            }
+        }
+        
+        return $this->response->withType('application/json')
+            ->withStringBody(json_encode([
+                'status' => 'error',
+                'message' => 'Aucune position reçue'
+            ]));
     }
 } 
