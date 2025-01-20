@@ -5,12 +5,27 @@ namespace App\Controller;
 
 class MenusController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        
+        // Get current user
+        $currentUser = $this->Authentication->getIdentity();
+        
+        // Check permissions for all menu-related actions
+        if (!$currentUser || $currentUser->permission < 2) {
+            $this->Flash->error('Access denied. Administrator permission required.');
+            return $this->redirect(['controller' => 'Users', 'action' => 'admin']);
+        }
+    }
+
     public function index()
     {
         $menus = $this->Menus->find()
             ->order(['ordre' => 'ASC'])
             ->all();
-        $this->set(compact('menus'));
+        $currentUser = $this->Authentication->getIdentity();
+        $this->set(compact('menus', 'currentUser'));
     }
 
     public function add()

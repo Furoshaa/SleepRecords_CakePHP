@@ -47,4 +47,22 @@ class AppController extends Controller
         // Autoriser l'accès à la page d'accueil sans authentification
         $this->Authentication->addUnauthenticatedActions(['display']);
     }
+
+    protected function isAuthorized($minimumPermission = 0)
+    {
+        $user = $this->Authentication->getIdentity();
+        if (!$user) {
+            return false;
+        }
+        return $user->permission >= $minimumPermission;
+    }
+
+    protected function requirePermission($minimumPermission = 0)
+    {
+        if (!$this->isAuthorized($minimumPermission)) {
+            $this->Flash->error('Access denied. Insufficient permissions.');
+            return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+        }
+        return true;
+    }
 }

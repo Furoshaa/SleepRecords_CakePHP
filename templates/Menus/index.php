@@ -6,7 +6,9 @@
 ?>
 <div class="menus index content">
     <h3>Gestion des Menus</h3>
-    <?= $this->Html->link(__('Nouveau Menu'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?php if ($currentUser && $currentUser->permission >= 2): ?>
+        <?= $this->Html->link(__('Nouveau Menu'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?php endif; ?>
     <table>
         <thead>
             <tr>
@@ -23,8 +25,13 @@
                 <td><?= h($menu->intitule) ?></td>
                 <td><?= h($menu->lien) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('Modifier'), ['action' => 'edit', $menu->id]) ?>
-                    <?= $this->Form->postLink(__('Supprimer'), ['action' => 'delete', $menu->id], ['confirm' => __('Êtes-vous sûr de vouloir supprimer {0}?', $menu->intitule)]) ?>
+                    <?php if ($currentUser && $currentUser->permission >= 2): ?>
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $menu->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), 
+                            ['action' => 'delete', $menu->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $menu->id)]) 
+                        ?>
+                    <?php endif; ?>
                 </td>
             </tr>
             <?php endforeach; ?>

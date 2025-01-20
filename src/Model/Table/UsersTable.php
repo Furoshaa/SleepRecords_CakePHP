@@ -40,6 +40,12 @@ class UsersTable extends Table
             ->notEmptyString('username')
             ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
+        $validator
+            ->integer('permission')
+            ->requirePresence('permission', 'create')
+            ->notEmptyString('permission')
+            ->range('permission', [0, 2], 'Permission must be between 0 and 2');
+
         return $validator;
     }
 } 

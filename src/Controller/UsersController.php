@@ -34,7 +34,10 @@ class UsersController extends AppController
     {
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $data = $this->request->getData();
+            // Set default permission level for new users
+            $data['permission'] = 0; // Default to lowest permission level
+            $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Registration successful.'));
                 return $this->redirect(['action' => 'login']);
@@ -79,10 +82,45 @@ class UsersController extends AppController
 
     public function index()
     {
+        // Only show users list to admin (permission level 2)
+        $currentUser = $this->Authentication->getIdentity();
+        if ($currentUser->permission < 2) {
+            $this->Flash->error('Access denied.');
+            return $this->redirect(['action' => 'admin']);
+        }
+
         $users = $this->Users->find()
-            ->select(['id', 'username', 'email', 'firstname', 'lastname', 'created'])
+            ->select(['id', 'username', 'email', 'firstname', 'lastname', 'permission', 'created'])
             ->order(['created' => 'DESC']);
         
         $this->set(compact('users'));
+    }
+
+    // Add a new method to change user permissions (admin only)
+    public function changePermission($id = null)
+    {
+        $this->request->allowMethod(['post']);
+        $currentUser = $this->Authentication->getIdentity();
+        
+        if ($currentUser->permission < 2) {
+            $this->Flash->error('Access denied.');
+            return $this->redirect(['action' => 'admin']);
+        }
+
+        $user = $this->Users->get($id);
+        if ($this->request->is('post')) {
+            $newPermission = $this->request->getData('permission');
+            if ($newPermission >= 0 && $newPermission <= 2) {
+                $user->permission = $newPermission;
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('Permission updated successfully.'));
+                } else {
+                    $this->Flash->error(__('Unable to update permission.'));
+                }
+            } else {
+                $this->Flash->error(__('Invalid permission level.'));
+            }
+        }
+        return $this->redirect(['action' => 'index']);
     }
 } 
