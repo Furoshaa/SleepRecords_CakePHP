@@ -5,6 +5,4 @@
 # Cake specific #
 ################
 tmp/*
-!tmp/
 logs/*
-!logs/
